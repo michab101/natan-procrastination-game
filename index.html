@@ -556,6 +556,17 @@
             });
         }
 
+        // ============ SPEECH SYNTHESIS ============
+        function speakWord(text, lang) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = lang;
+                utterance.rate = 0.9;
+                utterance.volume = 1;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
         // ============ SHOW WORD ============
         function showWord(wordKey) {
             const word = vocabulary[wordKey];
@@ -566,7 +577,11 @@
             document.getElementById('wordHebrew').textContent = `🇮🇱 ${word.hebrew}`;
 
             popup.classList.add('visible');
-            setTimeout(() => popup.classList.remove('visible'), 2000);
+            setTimeout(() => popup.classList.remove('visible'), 2500);
+
+            // Speak Russian first, then Hebrew
+            speakWord(word.russian, 'ru-RU');
+            setTimeout(() => speakWord(word.hebrew, 'he-IL'), 1200);
         }
 
         // ============ SPARKLES ============
