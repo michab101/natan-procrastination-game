@@ -44,19 +44,23 @@
         }
 
         .title-logo {
-            font-size: 42px;
+            font-size: 52px;
             color: #fff;
-            text-shadow: 3px 3px 0 #FF6B6B, 6px 6px 0 #4ECDC4;
+            text-shadow: 3px 3px 0 #FF6B6B, 6px 6px 0 #4ECDC4, 0 0 30px rgba(255,255,255,0.5);
             animation: titleBounce 2s ease-in-out infinite;
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            letter-spacing: 2px;
         }
 
         .title-subtitle {
-            font-size: 18px;
+            font-size: 28px;
             color: #FFE66D;
             margin-bottom: 20px;
             font-style: italic;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            font-weight: bold;
         }
 
         .title-natan {
@@ -197,8 +201,9 @@
             bottom: 42%;
             left: 3%;
             font-size: 90px;
-            z-index: 50;
+            z-index: 10;
             filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.3));
+            pointer-events: none;
         }
 
         /* Office Bookshelf */
@@ -207,8 +212,9 @@
             top: 12%;
             right: 8%;
             font-size: 80px;
-            z-index: 50;
+            z-index: 10;
             filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.3));
+            pointer-events: none;
         }
 
         /* Office Clock */
@@ -218,8 +224,9 @@
             left: 50%;
             transform: translateX(-50%);
             font-size: 60px;
-            z-index: 50;
+            z-index: 10;
             animation: clockTick 1s ease-in-out infinite;
+            pointer-events: none;
         }
 
         @keyframes clockTick {
@@ -233,8 +240,9 @@
             bottom: 42%;
             right: 5%;
             font-size: 70px;
-            z-index: 50;
+            z-index: 10;
             animation: lampGlow 3s ease-in-out infinite;
+            pointer-events: none;
         }
 
         @keyframes lampGlow {
@@ -694,22 +702,25 @@
         .dog {
             position: absolute;
             bottom: 42%;
-            right: 15%;
-            font-size: 80px;
+            right: 18%;
             cursor: pointer;
             animation: dogWag 0.5s ease-in-out infinite;
-            z-index: 100;
+            z-index: 200;
             padding: 10px;
-            transform: scaleX(1.8) scaleY(0.9);  /* Stretched like a dachshund! */
+        }
+
+        .dog img {
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         @keyframes dogWag {
-            0%, 100% { transform: scaleX(1.8) scaleY(0.9) rotate(-5deg); }
-            50% { transform: scaleX(1.8) scaleY(0.9) rotate(5deg); }
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
         }
 
         .dog:hover {
-            transform: scaleX(2.2) scaleY(1.1);
+            transform: scale(1.2);
             animation-play-state: paused;
             filter: drop-shadow(0 0 20px brown);
         }
@@ -854,8 +865,8 @@
         <div class="deadline" id="deadline" onclick="clickDeadline()">📅</div>
         <div class="baby" id="baby" onclick="clickBaby()">👶</div>
         <div class="boss" id="boss" onclick="clickBoss()"><img src="images/tzvika.png" alt="Tzvikush"></div>
-        <div class="dog" id="dog" onclick="clickDog()">🐕</div>
-        <div class="cannon" id="cannon" onclick="clickCannon()">💣</div>
+        <div class="dog" id="dog" onclick="clickDog()"><img src="images/dachshund.png" alt="Zehuva" style="width:120px;height:auto;"></div>
+        <div class="cannon" id="cannon" onclick="clickCannon()">🔫💨</div>
     </div>
 
     <!-- ============ UI ============ -->
@@ -909,7 +920,7 @@
             sleep: { russian: 'Спать', hebrew: 'לישון', emoji: '😴' },
             snack: { russian: 'Перекус', hebrew: 'חטיף', emoji: '🍕' },
             youtube: { russian: 'Ютуб', hebrew: 'יוטיוב', emoji: '📺' },
-            meme: { russian: 'Мем', hebrew: 'ממ', emoji: '😂' },
+            meme: { russian: 'Мем', hebrew: 'מים', emoji: '😂' },
             break: { russian: 'Перерыв', hebrew: 'הפסקה', emoji: '⏰' },
             email: { russian: 'Почта', hebrew: 'אימייל', emoji: '📧' },
             game: { russian: 'Игра', hebrew: 'משחק', emoji: '🎮' },
@@ -1019,7 +1030,8 @@
                 'tzvika_angry_ru.mp3', 'tzvika_angry_he.mp3',
                 'zehuva_en.mp3', 'zehuva_he.mp3', 'dog_bark.mp3',
                 'timhortons.mp3', 'ilya_house.mp3',
-                'natan_quote_0.mp3', 'natan_quote_1.mp3', 'natan_quote_2.mp3', 'natan_quote_3.mp3'
+                'natan_quote_0.mp3', 'natan_quote_1.mp3', 'natan_quote_2.mp3', 'natan_quote_3.mp3',
+                'motto.mp3'
             ];
             specialFiles.forEach(f => {
                 audioCache[f] = new Audio('audio/' + f);
@@ -1325,6 +1337,8 @@
             if (input.toLowerCase() === 'piggy') {
                 document.getElementById('passwordScreen').classList.add('hidden');
                 preloadAudio();
+                initAudio();
+                playAudio('motto.mp3');
             } else {
                 document.getElementById('passwordError').textContent = '❌ Wrong password! Try again...';
                 document.getElementById('passwordInput').value = '';
