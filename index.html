@@ -129,7 +129,72 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to bottom, #2C3E50 0%, #34495E 100%);
+            background: linear-gradient(to bottom, #87CEEB 0%, #B0C4DE 40%, #778899 60%, #E8DCC8 60%, #D4C4A8 100%);
+        }
+
+        /* Office Wall Details */
+        .office-bg::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 25%;
+            height: 30%;
+            background: linear-gradient(135deg, #4A90A4 0%, #357ABD 100%);
+            border: 8px solid #8B4513;
+            border-radius: 5px;
+            box-shadow: inset 0 0 50px rgba(255,255,255,0.3), 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .office-bg::after {
+            content: '🌅';
+            position: absolute;
+            top: 18%;
+            left: 18%;
+            font-size: 60px;
+        }
+
+        /* Office Plant */
+        .office-plant {
+            position: absolute;
+            bottom: 42%;
+            left: 5%;
+            font-size: 80px;
+            z-index: 50;
+        }
+
+        /* Office Bookshelf */
+        .office-shelf {
+            position: absolute;
+            top: 15%;
+            right: 10%;
+            font-size: 70px;
+            z-index: 50;
+        }
+
+        /* Office Clock */
+        .office-clock {
+            position: absolute;
+            top: 8%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 50px;
+            z-index: 50;
+        }
+
+        /* Office Lamp */
+        .office-lamp {
+            position: absolute;
+            bottom: 42%;
+            right: 8%;
+            font-size: 60px;
+            z-index: 50;
+            animation: lampGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes lampGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px #FFE66D); }
+            50% { filter: drop-shadow(0 0 30px #FFE66D); }
         }
 
         .desk {
@@ -138,8 +203,26 @@
             left: 0;
             width: 100%;
             height: 40%;
-            background: linear-gradient(to bottom, #8B4513 0%, #654321 100%);
-            border-top: 8px solid #5D3A1A;
+            background: linear-gradient(to bottom, #8B4513 0%, #654321 50%, #5D3A1A 100%);
+            border-top: 12px solid #4A3520;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Desk items */
+        .desk::before {
+            content: '📚';
+            position: absolute;
+            top: 15%;
+            left: 70%;
+            font-size: 40px;
+        }
+
+        .desk::after {
+            content: '🖊️';
+            position: absolute;
+            top: 20%;
+            right: 15%;
+            font-size: 30px;
         }
 
         .computer {
@@ -158,9 +241,6 @@
 
         /* Natan Character */
         .natan {
-            position: absolute;
-            bottom: 45%;
-            left: 20%;
             width: 100px;
             height: 100px;
             border-radius: 50%;
@@ -169,7 +249,6 @@
             cursor: pointer;
             transition: transform 0.3s;
             animation: natanIdle 3s ease-in-out infinite;
-            z-index: 100;
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
 
@@ -244,16 +323,18 @@
         /* ============ DISTRACTIONS ============ */
         .distraction {
             position: absolute;
-            font-size: 50px;
+            font-size: 60px;
             cursor: pointer;
             animation: float 3s ease-in-out infinite;
             transition: transform 0.2s;
             z-index: 200;
+            padding: 10px;
         }
 
         .distraction:hover {
             transform: scale(1.3);
             filter: drop-shadow(0 0 20px gold);
+            animation-play-state: paused;
         }
 
         @keyframes float {
@@ -474,10 +555,11 @@
             position: absolute;
             bottom: 48%;
             right: 25%;
-            font-size: 60px;
+            font-size: 80px;
             cursor: pointer;
             animation: babyBounce 2s ease-in-out infinite;
             z-index: 100;
+            padding: 10px;
         }
 
         @keyframes babyBounce {
@@ -487,6 +569,7 @@
 
         .baby:hover {
             transform: scale(1.3);
+            animation-play-state: paused;
         }
 
         /* ============ BOSS CHARACTER ============ */
@@ -494,13 +577,13 @@
             position: absolute;
             bottom: 50%;
             left: 60%;
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             border: 3px solid #FF6B6B;
             overflow: hidden;
             cursor: pointer;
-            animation: bossRun 8s ease-in-out infinite;
+            animation: bossRun 20s ease-in-out infinite;
             z-index: 100;
             box-shadow: 0 5px 20px rgba(255,0,0,0.3);
         }
@@ -521,6 +604,49 @@
 
         .boss:hover {
             filter: drop-shadow(0 0 20px red);
+            animation-play-state: paused;
+        }
+
+        /* ============ DOG CHARACTER ============ */
+        .dog {
+            position: absolute;
+            bottom: 42%;
+            right: 15%;
+            font-size: 70px;
+            cursor: pointer;
+            animation: dogWag 0.5s ease-in-out infinite;
+            z-index: 100;
+            padding: 10px;
+        }
+
+        @keyframes dogWag {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        .dog:hover {
+            transform: scale(1.3);
+            animation-play-state: paused;
+        }
+
+        /* ============ FALLING DONUT ============ */
+        .donut {
+            position: fixed;
+            font-size: 70px;
+            cursor: pointer;
+            z-index: 300;
+            animation: donutFall 6s linear forwards;
+            padding: 10px;
+        }
+
+        @keyframes donutFall {
+            0% { top: -80px; transform: rotate(0deg); }
+            100% { top: 110vh; transform: rotate(720deg); }
+        }
+
+        .donut:hover {
+            filter: drop-shadow(0 0 20px pink);
+            animation-play-state: paused;
         }
 
         /* ============ COFFEE COUNTER ============ */
@@ -533,6 +659,70 @@
             border-radius: 20px;
             color: #FFE66D;
             font-size: 24px;
+        }
+
+        /* ============ NATAN CONTAINER ============ */
+        .natan-container {
+            position: absolute;
+            bottom: 45%;
+            left: 20%;
+            z-index: 100;
+        }
+
+        .click-me-label {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #FFE66D;
+            color: #1a1a2e;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            white-space: nowrap;
+            animation: labelBounce 1s ease-in-out infinite;
+        }
+
+        @keyframes labelBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        /* ============ CLICKED ITEM BOUNCE ============ */
+        .clicked-big {
+            animation: clickedBigBounce 0.5s ease-in-out !important;
+        }
+
+        @keyframes clickedBigBounce {
+            0% { transform: scale(1); }
+            25% { transform: scale(5) translateY(-30px); }
+            50% { transform: scale(5) translateY(0); }
+            75% { transform: scale(5) translateY(-20px); }
+            100% { transform: scale(1) translateY(0); }
+        }
+
+        /* ============ CANNON CHARACTER ============ */
+        .cannon {
+            position: absolute;
+            bottom: 55%;
+            font-size: 60px;
+            cursor: pointer;
+            animation: cannonRace 12s linear infinite;
+            z-index: 100;
+        }
+
+        @keyframes cannonRace {
+            0% { left: -80px; transform: scaleX(1); }
+            48% { left: 100%; transform: scaleX(1); }
+            50% { left: 100%; transform: scaleX(-1); }
+            98% { left: -80px; transform: scaleX(-1); }
+            100% { left: -80px; transform: scaleX(1); }
+        }
+
+        .cannon:hover {
+            filter: drop-shadow(0 0 20px orange);
+            animation-play-state: paused;
         }
     </style>
 </head>
@@ -563,12 +753,21 @@
     <div class="game-container" id="gameContainer">
         <div class="office-bg"></div>
         <div class="desk"></div>
+        <div class="office-plant">🪴</div>
+        <div class="office-shelf">📚</div>
+        <div class="office-clock">🕐</div>
+        <div class="office-lamp">💡</div>
         <div class="computer">💻</div>
 
-        <div class="natan" id="natan" onclick="clickNatan()"><img src="images/natan.png" alt="Natan"></div>
+        <div class="natan-container">
+            <div class="click-me-label" id="clickMeLabel">Click me!</div>
+            <div class="natan" id="natan" onclick="clickNatan()"><img src="images/natan.png" alt="Natan"></div>
+        </div>
         <div class="deadline" id="deadline" onclick="clickDeadline()">📅</div>
         <div class="baby" id="baby" onclick="clickBaby()">👶</div>
         <div class="boss" id="boss" onclick="clickBoss()"><img src="images/tzvika.png" alt="Tzvikush"></div>
+        <div class="dog" id="dog" onclick="clickDog()">🐕</div>
+        <div class="cannon" id="cannon" onclick="clickCannon()">🏎️</div>
     </div>
 
     <!-- ============ UI ============ -->
@@ -726,7 +925,15 @@
                 audioCache[word + '_he.mp3'] = new Audio('audio/' + word + '_he.mp3');
             });
             // Special characters
-            ['kaleb_en.mp3', 'kaleb_he.mp3', 'tzvikush_en.mp3', 'tzvikush_he.mp3'].forEach(f => {
+            const specialFiles = [
+                'kaleb_en.mp3', 'kaleb_he.mp3', 'baby_cry.mp3',
+                'tzvikush_en.mp3', 'tzvikush_he.mp3',
+                'tzvika_angry_ru.mp3', 'tzvika_angry_he.mp3',
+                'zehuva_en.mp3', 'zehuva_he.mp3', 'dog_bark.mp3',
+                'timhortons.mp3', 'ilya_house.mp3',
+                'natan_quote_0.mp3', 'natan_quote_1.mp3', 'natan_quote_2.mp3', 'natan_quote_3.mp3'
+            ];
+            specialFiles.forEach(f => {
                 audioCache[f] = new Audio('audio/' + f);
             });
         }
@@ -883,12 +1090,68 @@
             }, 4000);
         }
 
+        // ============ SPAWN DONUTS ============
+        function spawnDonut() {
+            if (!gameState.gameStarted) return;
+
+            const donut = document.createElement('div');
+            donut.className = 'donut';
+            donut.textContent = '🍩';
+            donut.style.left = (5 + Math.random() * 85) + '%';
+
+            donut.addEventListener('click', (e) => {
+                e.stopPropagation();
+                initAudio();
+
+                createSparkles(e.clientX, e.clientY);
+                playAudio('timhortons.mp3');
+                playCollectSound();
+
+                gameState.distractionCount++;
+                gameState.procrastinationLevel += 3;
+                updateUI();
+
+                showAchievement("🍩 Tim Hortons - No Tariffs please!");
+
+                donut.remove();
+            });
+
+            document.body.appendChild(donut);
+
+            // Auto-remove after animation ends
+            setTimeout(() => {
+                if (donut.parentNode) donut.remove();
+            }, 6000);
+        }
+
         // ============ CLICK HANDLERS ============
+        let natanClickCount = 0;
+        const natanSpecialQuotes = [
+            "Even I cannot pronounce my name!",
+            "I was beaten by an 11 year old in squash!",
+            "Notion sucks!",
+            "Long live Piggy!"
+        ];
+
         function clickNatan() {
             initAudio();
             playCollectSound();
             createSparkles(event.clientX, event.clientY);
-            showAchievement(natanQuotes[Math.floor(Math.random() * natanQuotes.length)]);
+
+            // Cycle through special quotes
+            const quote = natanSpecialQuotes[natanClickCount % natanSpecialQuotes.length];
+            showAchievement("🙈 Natan: '" + quote + "'");
+            playAudio('natan_quote_' + (natanClickCount % natanSpecialQuotes.length) + '.mp3');
+
+            natanClickCount++;
+
+            // Update label
+            document.getElementById('clickMeLabel').textContent = 'Try again!';
+
+            // Make Natan bounce big
+            const natan = document.getElementById('natan');
+            natan.classList.add('clicked-big');
+            setTimeout(() => natan.classList.remove('clicked-big'), 500);
         }
 
         function clickDeadline() {
@@ -905,6 +1168,13 @@
             createSparkles(event.clientX, event.clientY);
             playAudio('kaleb_en.mp3');
             setTimeout(() => playAudio('kaleb_he.mp3'), 800);
+            setTimeout(() => playAudio('baby_cry.mp3'), 1600);
+
+            // Make baby bounce big
+            const baby = document.getElementById('baby');
+            baby.classList.add('clicked-big');
+            setTimeout(() => baby.classList.remove('clicked-big'), 500);
+
             showAchievement("👶 Kaleb says: 'Daddy, play with me!' (Great excuse!)");
         }
 
@@ -912,16 +1182,54 @@
             initAudio();
             playSound(100, 0.5, 'sawtooth');
             createSparkles(event.clientX, event.clientY);
-            playAudio('tzvikush_en.mp3');
-            setTimeout(() => playAudio('tzvikush_he.mp3'), 800);
-            const bossQuotes = [
-                "😠 Tzvikush: 'WHERE ARE THOSE REPORTS?!'",
-                "😠 Tzvikush: 'This was due YESTERDAY!'",
-                "😠 Tzvikush: 'Are you on YouTube AGAIN?!'",
-                "😠 Tzvikush: 'I need this ASAP!'",
-                "😠 Tzvikush: 'My office. NOW.'"
+
+            // Play angry "Natan where are you?" in Russian then Hebrew
+            playAudio('tzvika_angry_ru.mp3');
+            setTimeout(() => playAudio('tzvika_angry_he.mp3'), 1200);
+
+            // Make boss bounce big and angry
+            const boss = document.getElementById('boss');
+            boss.classList.add('clicked-big');
+            setTimeout(() => boss.classList.remove('clicked-big'), 500);
+
+            showAchievement("😡 Tzvikush: 'NATAN! WHERE ARE YOU?!'");
+        }
+
+        function clickDog() {
+            initAudio();
+            playCollectSound();
+            createSparkles(event.clientX, event.clientY);
+            playAudio('zehuva_en.mp3');
+            setTimeout(() => playAudio('zehuva_he.mp3'), 800);
+            // Play bark sound
+            setTimeout(() => playAudio('dog_bark.mp3'), 1600);
+
+            // Make dog bounce big
+            const dog = document.getElementById('dog');
+            dog.classList.add('clicked-big');
+            setTimeout(() => dog.classList.remove('clicked-big'), 500);
+
+            const dogQuotes = [
+                "🐕 Zehuva wants walkies! Another great excuse!",
+                "🐕 Zehuva: 'Woof! Pet me instead of working!'",
+                "🐕 Zehuva needs attention! Work can wait!",
+                "🐕 Zehuva is the best distraction! Good girl!"
             ];
-            showAchievement(bossQuotes[Math.floor(Math.random() * bossQuotes.length)]);
+            showAchievement(dogQuotes[Math.floor(Math.random() * dogQuotes.length)]);
+        }
+
+        function clickCannon() {
+            initAudio();
+            playCollectSound();
+            createSparkles(event.clientX, event.clientY);
+            playAudio('ilya_house.mp3');
+
+            // Make cannon bounce big
+            const cannon = document.getElementById('cannon');
+            cannon.classList.add('clicked-big');
+            setTimeout(() => cannon.classList.remove('clicked-big'), 500);
+
+            showAchievement("🏎️ Ilya is in the house!");
         }
 
         // ============ PASSWORD CHECK ============
@@ -936,8 +1244,9 @@
             }
         }
 
-        // Allow Enter key for password
+        // Allow Enter key for password and auto-focus
         document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('passwordInput').focus();
             document.getElementById('passwordInput').addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') checkPassword();
             });
@@ -978,11 +1287,13 @@
             // Spawn distractions periodically
             setInterval(spawnDistraction, 2000);
             setInterval(spawnTask, 4000);
+            setInterval(spawnDonut, 3000);
 
             // Initial spawns
             setTimeout(spawnDistraction, 500);
             setTimeout(spawnDistraction, 1000);
             setTimeout(spawnTask, 1500);
+            setTimeout(spawnDonut, 2000);
         }
 
         // ============ SECRET CODE ============
