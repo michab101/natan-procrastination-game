@@ -1337,8 +1337,6 @@
             if (input.toLowerCase() === 'piggy') {
                 document.getElementById('passwordScreen').classList.add('hidden');
                 preloadAudio();
-                initAudio();
-                playAudio('motto.mp3');
             } else {
                 document.getElementById('passwordError').textContent = '❌ Wrong password! Try again...';
                 document.getElementById('passwordInput').value = '';
@@ -1383,6 +1381,10 @@
             document.getElementById('titleScreen').classList.add('hidden');
             gameState.gameStarted = true;
             initAudio();
+
+            // Play the motto!
+            playAudio('motto.mp3');
+
             startBackgroundMusic();
 
             // Spawn distractions periodically
