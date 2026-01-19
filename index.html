@@ -735,7 +735,6 @@
         <div style="color: #FFE66D; font-size: 16px; margin: 10px;">Chief of Staff by Day, Master Procrastinator by Night</div>
         <div style="color: white; font-size: 14px;">Learn Hebrew/Russian while avoiding work!</div>
         <button class="start-button" onclick="startGame()">🎮 Start Procrastinating!</button>
-        <div class="password-hint">Secret code: try typing "piggy"</div>
     </div>
 
     <!-- ============ PASSWORD SCREEN ============ -->
@@ -1135,10 +1134,9 @@
 
         function clickNatan() {
             initAudio();
-            playCollectSound();
             createSparkles(event.clientX, event.clientY);
 
-            // Cycle through special quotes
+            // Cycle through special quotes - only play voice, no beep
             const quote = natanSpecialQuotes[natanClickCount % natanSpecialQuotes.length];
             showAchievement("🙈 Natan: '" + quote + "'");
             playAudio('natan_quote_' + (natanClickCount % natanSpecialQuotes.length) + '.mp3');
