@@ -122,107 +122,162 @@
             overflow: hidden;
         }
 
-        /* Office Background */
+        /* Office Background - Cozy modern office */
         .office-bg {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to bottom, #87CEEB 0%, #B0C4DE 40%, #778899 60%, #E8DCC8 60%, #D4C4A8 100%);
+            background: linear-gradient(180deg,
+                #FFE4B5 0%,      /* Warm ceiling light */
+                #F5DEB3 20%,     /* Wheat tone */
+                #DEB887 40%,     /* Burlywood wall */
+                #D2B48C 55%,     /* Tan wall bottom */
+                #8B7355 60%,     /* Wall-floor transition */
+                #696969 60%,     /* Floor start */
+                #505050 100%    /* Floor end */
+            );
         }
 
-        /* Office Wall Details */
+        /* Office Wall Details - Window */
         .office-bg::before {
             content: '';
             position: absolute;
-            top: 10%;
-            left: 10%;
-            width: 25%;
-            height: 30%;
-            background: linear-gradient(135deg, #4A90A4 0%, #357ABD 100%);
-            border: 8px solid #8B4513;
-            border-radius: 5px;
-            box-shadow: inset 0 0 50px rgba(255,255,255,0.3), 0 5px 20px rgba(0,0,0,0.3);
+            top: 8%;
+            left: 8%;
+            width: 28%;
+            height: 35%;
+            background: linear-gradient(180deg, #87CEEB 0%, #ADD8E6 50%, #98D8C8 100%);
+            border: 12px solid #5D4E37;
+            border-radius: 8px;
+            box-shadow: inset 0 0 60px rgba(255,255,255,0.5), 0 8px 25px rgba(0,0,0,0.4);
         }
 
         .office-bg::after {
-            content: '🌅';
+            content: '🌤️';
             position: absolute;
-            top: 18%;
-            left: 18%;
-            font-size: 60px;
+            top: 15%;
+            left: 15%;
+            font-size: 70px;
+            filter: drop-shadow(0 0 10px rgba(255,200,0,0.5));
         }
 
         /* Office Plant */
         .office-plant {
             position: absolute;
             bottom: 42%;
-            left: 5%;
-            font-size: 80px;
+            left: 3%;
+            font-size: 90px;
             z-index: 50;
+            filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.3));
         }
 
         /* Office Bookshelf */
         .office-shelf {
             position: absolute;
-            top: 15%;
-            right: 10%;
-            font-size: 70px;
+            top: 12%;
+            right: 8%;
+            font-size: 80px;
             z-index: 50;
+            filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.3));
         }
 
         /* Office Clock */
         .office-clock {
             position: absolute;
-            top: 8%;
+            top: 5%;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 50px;
+            font-size: 60px;
             z-index: 50;
+            animation: clockTick 1s ease-in-out infinite;
+        }
+
+        @keyframes clockTick {
+            0%, 100% { transform: translateX(-50%) rotate(-2deg); }
+            50% { transform: translateX(-50%) rotate(2deg); }
         }
 
         /* Office Lamp */
         .office-lamp {
             position: absolute;
             bottom: 42%;
-            right: 8%;
-            font-size: 60px;
+            right: 5%;
+            font-size: 70px;
             z-index: 50;
             animation: lampGlow 3s ease-in-out infinite;
         }
 
         @keyframes lampGlow {
-            0%, 100% { filter: drop-shadow(0 0 10px #FFE66D); }
-            50% { filter: drop-shadow(0 0 30px #FFE66D); }
+            0%, 100% { filter: drop-shadow(0 0 15px #FFE66D) drop-shadow(0 0 30px rgba(255,200,0,0.3)); }
+            50% { filter: drop-shadow(0 0 40px #FFE66D) drop-shadow(0 0 60px rgba(255,200,0,0.5)); }
         }
 
+        /* Pretty wooden desk */
         .desk {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
             height: 40%;
-            background: linear-gradient(to bottom, #8B4513 0%, #654321 50%, #5D3A1A 100%);
-            border-top: 12px solid #4A3520;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+            background: linear-gradient(180deg,
+                #8B6914 0%,      /* Top edge shine */
+                #6B4423 5%,      /* Rich wood */
+                #5D3A1A 30%,     /* Medium wood */
+                #4A2C0F 70%,     /* Dark wood */
+                #3D2409 100%     /* Bottom shadow */
+            );
+            border-top: 15px solid #2F1A09;
+            box-shadow: 0 -15px 40px rgba(0,0,0,0.4), inset 0 5px 20px rgba(255,255,255,0.1);
         }
 
         /* Desk items */
         .desk::before {
-            content: '📚';
+            content: '📚☕';
             position: absolute;
-            top: 15%;
-            left: 70%;
-            font-size: 40px;
+            top: 12%;
+            left: 65%;
+            font-size: 45px;
         }
 
         .desk::after {
-            content: '🖊️';
+            content: '🖊️📋';
             position: absolute;
-            top: 20%;
-            right: 15%;
-            font-size: 30px;
+            top: 18%;
+            right: 12%;
+            font-size: 35px;
+        }
+
+        /* Additional office decor */
+        .office-poster {
+            position: absolute;
+            top: 10%;
+            right: 35%;
+            font-size: 50px;
+            z-index: 50;
+        }
+
+        .office-whiteboard {
+            position: absolute;
+            top: 8%;
+            left: 45%;
+            width: 15%;
+            height: 25%;
+            background: white;
+            border: 6px solid #333;
+            border-radius: 5px;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.3);
+            z-index: 50;
+        }
+
+        .office-whiteboard::after {
+            content: '📊';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 50px;
         }
 
         .computer {
@@ -607,26 +662,28 @@
             animation-play-state: paused;
         }
 
-        /* ============ DOG CHARACTER ============ */
+        /* ============ DOG CHARACTER - DACHSHUND ============ */
         .dog {
             position: absolute;
             bottom: 42%;
             right: 15%;
-            font-size: 70px;
+            font-size: 80px;
             cursor: pointer;
             animation: dogWag 0.5s ease-in-out infinite;
             z-index: 100;
             padding: 10px;
+            transform: scaleX(1.8) scaleY(0.9);  /* Stretched like a dachshund! */
         }
 
         @keyframes dogWag {
-            0%, 100% { transform: rotate(-10deg); }
-            50% { transform: rotate(10deg); }
+            0%, 100% { transform: scaleX(1.8) scaleY(0.9) rotate(-5deg); }
+            50% { transform: scaleX(1.8) scaleY(0.9) rotate(5deg); }
         }
 
         .dog:hover {
-            transform: scale(1.3);
+            transform: scaleX(2.2) scaleY(1.1);
             animation-play-state: paused;
+            filter: drop-shadow(0 0 20px brown);
         }
 
         /* ============ FALLING DONUT ============ */
@@ -705,23 +762,24 @@
         /* ============ CANNON CHARACTER ============ */
         .cannon {
             position: absolute;
-            bottom: 55%;
-            font-size: 60px;
+            bottom: 52%;
+            font-size: 150px;
             cursor: pointer;
-            animation: cannonRace 12s linear infinite;
+            animation: cannonRace 40s linear infinite;
             z-index: 100;
+            padding: 20px;
         }
 
         @keyframes cannonRace {
-            0% { left: -80px; transform: scaleX(1); }
+            0% { left: -200px; transform: scaleX(1); }
             48% { left: 100%; transform: scaleX(1); }
             50% { left: 100%; transform: scaleX(-1); }
-            98% { left: -80px; transform: scaleX(-1); }
-            100% { left: -80px; transform: scaleX(1); }
+            98% { left: -200px; transform: scaleX(-1); }
+            100% { left: -200px; transform: scaleX(1); }
         }
 
         .cannon:hover {
-            filter: drop-shadow(0 0 20px orange);
+            filter: drop-shadow(0 0 40px orange);
             animation-play-state: paused;
         }
     </style>
@@ -756,6 +814,7 @@
         <div class="office-shelf">📚</div>
         <div class="office-clock">🕐</div>
         <div class="office-lamp">💡</div>
+        <div class="office-whiteboard"></div>
         <div class="computer">💻</div>
 
         <div class="natan-container">
@@ -766,7 +825,7 @@
         <div class="baby" id="baby" onclick="clickBaby()">👶</div>
         <div class="boss" id="boss" onclick="clickBoss()"><img src="images/tzvika.png" alt="Tzvikush"></div>
         <div class="dog" id="dog" onclick="clickDog()">🐕</div>
-        <div class="cannon" id="cannon" onclick="clickCannon()">🏎️</div>
+        <div class="cannon" id="cannon" onclick="clickCannon()">💣</div>
     </div>
 
     <!-- ============ UI ============ -->
