@@ -802,11 +802,15 @@
         .cannon {
             position: absolute;
             bottom: 52%;
-            font-size: 150px;
             cursor: pointer;
             animation: cannonRace 40s linear infinite;
-            z-index: 100;
-            padding: 20px;
+            z-index: 200;
+            padding: 10px;
+        }
+
+        .cannon img {
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
         @keyframes cannonRace {
@@ -866,7 +870,7 @@
         <div class="baby" id="baby" onclick="clickBaby()">👶</div>
         <div class="boss" id="boss" onclick="clickBoss()"><img src="images/tzvika.png" alt="Tzvikush"></div>
         <div class="dog" id="dog" onclick="clickDog()"><img src="images/dachshund.png" alt="Zehuva" style="width:120px;height:auto;"></div>
-        <div class="cannon" id="cannon" onclick="clickCannon()">🔫💨</div>
+        <div class="cannon" id="cannon" onclick="clickCannon()"><img src="images/cannon.jpeg" alt="Cannon" style="width:150px;height:auto;"></div>
     </div>
 
     <!-- ============ UI ============ -->
