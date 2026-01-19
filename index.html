@@ -771,8 +771,9 @@
         .cannon {
             position: absolute;
             bottom: 52%;
+            left: 5%;
             cursor: pointer;
-            animation: cannonRace 40s linear infinite;
+            animation: cannonRace 30s linear infinite;
             z-index: 200;
             padding: 10px;
         }
@@ -783,11 +784,11 @@
         }
 
         @keyframes cannonRace {
-            0% { left: -200px; transform: scaleX(1); }
-            48% { left: 100%; transform: scaleX(1); }
-            50% { left: 100%; transform: scaleX(-1); }
-            98% { left: -200px; transform: scaleX(-1); }
-            100% { left: -200px; transform: scaleX(1); }
+            0% { left: 5%; transform: scaleX(1); }
+            45% { left: 80%; transform: scaleX(1); }
+            50% { left: 80%; transform: scaleX(-1); }
+            95% { left: 5%; transform: scaleX(-1); }
+            100% { left: 5%; transform: scaleX(1); }
         }
 
         .cannon:hover {
