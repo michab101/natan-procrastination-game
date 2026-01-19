@@ -994,10 +994,10 @@
             document.getElementById('tasksAvoided').textContent = gameState.tasksAvoided;
             document.getElementById('coffeeCounter').textContent = `☕ x ${gameState.coffeeCount}`;
 
-            const level = Math.min(gameState.procrastinationLevel, 100);
+            const level = Math.min((gameState.procrastinationLevel / 100000) * 100, 100);
             document.getElementById('meterFill').style.width = level + '%';
 
-            if (gameState.procrastinationLevel >= 100) {
+            if (gameState.procrastinationLevel >= 100000) {
                 winLevel();
             }
         }
@@ -1031,7 +1031,7 @@
                     playCollectSound();
                 }
 
-                gameState.procrastinationLevel += 5;
+                gameState.procrastinationLevel += 500;
                 updateUI();
                 checkAchievements();
 
@@ -1073,7 +1073,7 @@
                 playSound(200, 0.3, 'square'); // Negative sound
 
                 gameState.tasksAvoided++;
-                gameState.procrastinationLevel += 10;
+                gameState.procrastinationLevel += 1000;
                 updateUI();
                 checkAchievements();
 
@@ -1107,7 +1107,7 @@
                 playCollectSound();
 
                 gameState.distractionCount++;
-                gameState.procrastinationLevel += 3;
+                gameState.procrastinationLevel += 300;
                 updateUI();
 
                 showAchievement("🍩 Tim Hortons - No Tariffs please!");
