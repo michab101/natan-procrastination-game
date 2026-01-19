@@ -1337,6 +1337,9 @@
             if (input.toLowerCase() === 'piggy') {
                 document.getElementById('passwordScreen').classList.add('hidden');
                 preloadAudio();
+                initAudio();
+                // Play motto immediately on successful password
+                setTimeout(() => playAudio('motto.mp3'), 100);
             } else {
                 document.getElementById('passwordError').textContent = '❌ Wrong password! Try again...';
                 document.getElementById('passwordInput').value = '';
