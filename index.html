@@ -458,6 +458,17 @@
             font-size: 16px;
         }
 
+        .password-pig {
+            font-size: 80px;
+            margin-top: 30px;
+            animation: pigHop 0.5s ease-in-out infinite;
+        }
+
+        @keyframes pigHop {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+
         /* ============ BABY CHARACTER ============ */
         .baby {
             position: absolute;
@@ -483,16 +494,27 @@
             position: absolute;
             bottom: 50%;
             left: 60%;
-            font-size: 70px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid #FF6B6B;
+            overflow: hidden;
             cursor: pointer;
-            animation: bossRun 3s ease-in-out infinite;
+            animation: bossRun 8s ease-in-out infinite;
             z-index: 100;
+            box-shadow: 0 5px 20px rgba(255,0,0,0.3);
+        }
+
+        .boss img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         @keyframes bossRun {
             0% { left: 10%; transform: scaleX(1); }
-            45% { left: 80%; transform: scaleX(1); }
-            50% { left: 80%; transform: scaleX(-1); }
+            45% { left: 70%; transform: scaleX(1); }
+            50% { left: 70%; transform: scaleX(-1); }
             95% { left: 10%; transform: scaleX(-1); }
             100% { left: 10%; transform: scaleX(1); }
         }
@@ -523,7 +545,7 @@
         <div style="color: #FFE66D; font-size: 16px; margin: 10px;">Chief of Staff by Day, Master Procrastinator by Night</div>
         <div style="color: white; font-size: 14px;">Learn Hebrew/Russian while avoiding work!</div>
         <button class="start-button" onclick="startGame()">🎮 Start Procrastinating!</button>
-        <div class="password-hint">Secret code: try typing "achlabachla"</div>
+        <div class="password-hint">Secret code: try typing "piggy"</div>
     </div>
 
     <!-- ============ PASSWORD SCREEN ============ -->
@@ -533,6 +555,8 @@
         <input type="password" id="passwordInput" class="password-input" placeholder="Type password..." autocomplete="off">
         <button class="password-button" onclick="checkPassword()">Enter</button>
         <div id="passwordError" class="password-error"></div>
+        <div class="password-pig">🐷</div>
+        <div style="color: rgba(255,255,255,0.5); font-size: 14px; margin-top: 10px;">Hint: What's hopping around? 👆</div>
     </div>
 
     <!-- ============ GAME CONTAINER ============ -->
@@ -544,7 +568,7 @@
         <div class="natan" id="natan" onclick="clickNatan()"><img src="images/natan.png" alt="Natan"></div>
         <div class="deadline" id="deadline" onclick="clickDeadline()">📅</div>
         <div class="baby" id="baby" onclick="clickBaby()">👶</div>
-        <div class="boss" id="boss" onclick="clickBoss()">😠</div>
+        <div class="boss" id="boss" onclick="clickBoss()"><img src="images/tzvika.png" alt="Tzvikush"></div>
     </div>
 
     <!-- ============ UI ============ -->
@@ -903,7 +927,7 @@
         // ============ PASSWORD CHECK ============
         function checkPassword() {
             const input = document.getElementById('passwordInput').value;
-            if (input.toLowerCase() === 'achlabachla') {
+            if (input.toLowerCase() === 'piggy') {
                 document.getElementById('passwordScreen').classList.add('hidden');
                 preloadAudio();
             } else {
@@ -948,6 +972,8 @@
         function startGame() {
             document.getElementById('titleScreen').classList.add('hidden');
             gameState.gameStarted = true;
+            initAudio();
+            startBackgroundMusic();
 
             // Spawn distractions periodically
             setInterval(spawnDistraction, 2000);
@@ -962,23 +988,12 @@
         // ============ SECRET CODE ============
         document.addEventListener('keydown', (e) => {
             gameState.secretCode += e.key.toLowerCase();
-            if (gameState.secretCode.includes('achlabachla')) {
+            if (gameState.secretCode.includes('piggy')) {
                 gameState.secretCode = '';
                 showAchievement("🔓 SECRET UNLOCKED! Infinite Coffee Mode! ☕☕☕");
                 gameState.coffeeCount += 100;
                 gameState.procrastinationLevel = 99;
                 updateUI();
-
-                // Rainbow background
-                document.body.style.animation = 'rainbow 2s infinite';
-                const style = document.createElement('style');
-                style.textContent = `
-                    @keyframes rainbow {
-                        0% { filter: hue-rotate(0deg); }
-                        100% { filter: hue-rotate(360deg); }
-                    }
-                `;
-                document.head.appendChild(style);
             }
 
             // Keep only last 20 characters
@@ -986,6 +1001,53 @@
                 gameState.secretCode = gameState.secretCode.slice(-20);
             }
         });
+
+        // ============ BACKGROUND MUSIC ============
+        let bgMusicPlaying = false;
+        let bgMusicOscillators = [];
+
+        function startBackgroundMusic() {
+            if (bgMusicPlaying || !audioContext) return;
+            bgMusicPlaying = true;
+
+            // Create a chill lo-fi style background
+            const chords = [
+                [261.63, 329.63, 392.00], // C major
+                [293.66, 369.99, 440.00], // D minor
+                [329.63, 415.30, 493.88], // E minor
+                [349.23, 440.00, 523.25], // F major
+            ];
+
+            let chordIndex = 0;
+
+            function playChord() {
+                if (!bgMusicPlaying) return;
+
+                const chord = chords[chordIndex % chords.length];
+                chord.forEach((freq, i) => {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.value = freq / 2; // Lower octave
+                    gain.gain.setValueAtTime(0, audioContext.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.05, audioContext.currentTime + 0.5);
+                    gain.gain.linearRampToValueAtTime(0, audioContext.currentTime + 3.5);
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+                    osc.start();
+                    osc.stop(audioContext.currentTime + 4);
+                });
+
+                chordIndex++;
+                setTimeout(playChord, 4000);
+            }
+
+            playChord();
+        }
+
+        function stopBackgroundMusic() {
+            bgMusicPlaying = false;
+        }
     </script>
 </body>
 </html>
