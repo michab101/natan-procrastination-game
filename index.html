@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Natan's Procrastination Station 😴</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>😴</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            overflow: hidden;
+            font-family: 'Comic Sans MS', 'Chalkboard', cursive, sans-serif;
+            touch-action: manipulation;
+            background: linear-gradient(to bottom, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+        }
+
+        /* ============ TITLE SCREEN ============ */
+        .title-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            transition: opacity 1s, transform 1s;
+        }
+
+        .title-screen.hidden {
+            opacity: 0;
+            transform: scale(1.1);
+            pointer-events: none;
+        }
+
+        .title-logo {
+            font-size: 42px;
+            color: #fff;
+            text-shadow: 3px 3px 0 #FF6B6B, 6px 6px 0 #4ECDC4;
+            animation: titleBounce 2s ease-in-out infinite;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .title-subtitle {
+            font-size: 18px;
+            color: #FFE66D;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .title-natan {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid #FFE66D;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            animation: natanSpin 4s ease-in-out infinite;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            margin: 20px 0;
+        }
+
+        @keyframes titleBounce {
+            0%, 100% { transform: translateY(0) rotate(-1deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+        }
+
+        @keyframes natanSpin {
+            0%, 100% { transform: rotate(-5deg) scale(1); }
+            25% { transform: rotate(5deg) scale(1.05); }
+            50% { transform: rotate(-3deg) scale(1); }
+            75% { transform: rotate(3deg) scale(1.02); }
+        }
+
+        .start-button {
+            padding: 20px 50px;
+            font-size: 24px;
+            background: linear-gradient(45deg, #FF6B6B, #FFE66D);
+            border: none;
+            border-radius: 50px;
+            color: #1a1a2e;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+
+        .start-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .password-hint {
+            margin-top: 30px;
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+        }
+
+        /* ============ GAME CONTAINER ============ */
+        .game-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Office Background */
+        .office-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #2C3E50 0%, #34495E 100%);
+        }
+
+        .desk {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(to bottom, #8B4513 0%, #654321 100%);
+            border-top: 8px solid #5D3A1A;
+        }
+
+        .computer {
+            position: absolute;
+            bottom: 42%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 100px;
+            animation: computerGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes computerGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px #4ECDC4); }
+            50% { filter: drop-shadow(0 0 30px #4ECDC4); }
+        }
+
+        /* Natan Character */
+        .natan {
+            position: absolute;
+            bottom: 45%;
+            left: 20%;
+            font-size: 80px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            animation: natanIdle 3s ease-in-out infinite;
+            z-index: 100;
+        }
+
+        @keyframes natanIdle {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-5px) rotate(-2deg); }
+            75% { transform: translateY(-3px) rotate(2deg); }
+        }
+
+        .natan:hover {
+            transform: scale(1.2);
+        }
+
+        /* ============ UI ============ */
+        .game-ui {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 500;
+            pointer-events: none;
+        }
+
+        .score-display {
+            background: rgba(0,0,0,0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: #FFE66D;
+            font-size: 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .procrastination-meter {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 25px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid #FFE66D;
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF6B6B, #FFE66D, #4ECDC4);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .meter-label {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 12px;
+            line-height: 25px;
+            text-shadow: 1px 1px 2px black;
+        }
+
+        /* ============ DISTRACTIONS ============ */
+        .distraction {
+            position: absolute;
+            font-size: 50px;
+            cursor: pointer;
+            animation: float 3s ease-in-out infinite;
+            transition: transform 0.2s;
+            z-index: 200;
+        }
+
+        .distraction:hover {
+            transform: scale(1.3);
+            filter: drop-shadow(0 0 20px gold);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        /* ============ DEADLINE BOSS ============ */
+        .deadline {
+            position: absolute;
+            bottom: 45%;
+            right: 10%;
+            font-size: 70px;
+            animation: deadlinePulse 1s ease-in-out infinite;
+            cursor: pointer;
+        }
+
+        @keyframes deadlinePulse {
+            0%, 100% { transform: scale(1); filter: hue-rotate(0deg); }
+            50% { transform: scale(1.1); filter: hue-rotate(20deg); }
+        }
+
+        /* ============ TASK PAPERS ============ */
+        .task {
+            position: absolute;
+            font-size: 40px;
+            cursor: pointer;
+            animation: paperFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes paperFloat {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+
+        /* ============ SPARKLES ============ */
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            animation: sparkleAnim 0.8s ease-out forwards;
+            z-index: 1000;
+        }
+
+        @keyframes sparkleAnim {
+            0% { transform: scale(0) rotate(0deg); opacity: 1; }
+            100% { transform: scale(1.5) rotate(180deg); opacity: 0; }
+        }
+
+        /* ============ POPUP ============ */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            color: white;
+            z-index: 2000;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .popup.visible {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .popup h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .popup p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .popup button {
+            padding: 15px 40px;
+            font-size: 20px;
+            background: #FFE66D;
+            border: none;
+            border-radius: 30px;
+            color: #1a1a2e;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+        }
+
+        /* ============ WORD DISPLAY ============ */
+        .word-popup {
+            position: fixed;
+            top: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            padding: 20px 40px;
+            border-radius: 20px;
+            color: white;
+            font-size: 24px;
+            z-index: 800;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-align: center;
+        }
+
+        .word-popup.visible {
+            opacity: 1;
+        }
+
+        .word-russian {
+            color: #FF6B6B;
+            font-size: 28px;
+        }
+
+        .word-hebrew {
+            color: #4ECDC4;
+            font-size: 28px;
+            margin-top: 10px;
+        }
+
+        /* ============ ACHIEVEMENT ============ */
+        .achievement {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(45deg, #FFE66D, #FF6B6B);
+            padding: 15px 30px;
+            border-radius: 50px;
+            color: #1a1a2e;
+            font-weight: bold;
+            font-size: 18px;
+            z-index: 900;
+            opacity: 0;
+            transition: all 0.5s;
+        }
+
+        .achievement.visible {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* ============ COFFEE COUNTER ============ */
+        .coffee-counter {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: #FFE66D;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- ============ TITLE SCREEN ============ -->
+    <div class="title-screen" id="titleScreen">
+        <div class="title-logo">🚀 Natan's Procrastination Station 😴</div>
+        <div class="title-subtitle">"Why do today what you can do tomorrow?"</div>
+        <div class="title-natan">🧔</div>
+        <div style="color: #FFE66D; font-size: 16px; margin: 10px;">Chief of Staff by Day, Master Procrastinator by Night</div>
+        <div style="color: white; font-size: 14px;">Learn Hebrew/Russian while avoiding work!</div>
+        <button class="start-button" onclick="startGame()">🎮 Start Procrastinating!</button>
+        <div class="password-hint">Secret code: try typing "achlabachla"</div>
+    </div>
+
+    <!-- ============ GAME CONTAINER ============ -->
+    <div class="game-container" id="gameContainer">
+        <div class="office-bg"></div>
+        <div class="desk"></div>
+        <div class="computer">💻</div>
+
+        <div class="natan" id="natan" onclick="clickNatan()">🧔</div>
+        <div class="deadline" id="deadline" onclick="clickDeadline()">📅</div>
+    </div>
+
+    <!-- ============ UI ============ -->
+    <div class="game-ui">
+        <div class="score-display">
+            <span>☕ <span id="coffeeScore">0</span></span>
+            <span>📱 <span id="distractionScore">0</span></span>
+            <span>📋 <span id="tasksAvoided">0</span></span>
+        </div>
+    </div>
+
+    <div class="procrastination-meter">
+        <div class="meter-label">Procrastination Level</div>
+        <div class="meter-fill" id="meterFill"></div>
+    </div>
+
+    <div class="coffee-counter" id="coffeeCounter">☕ x 0</div>
+
+    <!-- ============ WORD POPUP ============ -->
+    <div class="word-popup" id="wordPopup">
+        <div class="word-russian" id="wordRussian"></div>
+        <div class="word-hebrew" id="wordHebrew"></div>
+    </div>
+
+    <!-- ============ ACHIEVEMENT ============ -->
+    <div class="achievement" id="achievement"></div>
+
+    <!-- ============ WIN POPUP ============ -->
+    <div class="popup" id="winPopup">
+        <h2>🎉 Level Complete! 🎉</h2>
+        <p id="winMessage">You successfully avoided all work!</p>
+        <button onclick="nextLevel()">More Procrastination! →</button>
+    </div>
+
+    <script>
+        // ============ GAME STATE ============
+        let gameState = {
+            coffeeCount: 0,
+            distractionCount: 0,
+            tasksAvoided: 0,
+            procrastinationLevel: 0,
+            level: 1,
+            gameStarted: false,
+            secretCode: ''
+        };
+
+        // ============ VOCABULARY ============
+        const vocabulary = {
+            coffee: { russian: 'Кофе', hebrew: 'קפה', emoji: '☕' },
+            phone: { russian: 'Телефон', hebrew: 'טלפון', emoji: '📱' },
+            sleep: { russian: 'Спать', hebrew: 'לישון', emoji: '😴' },
+            snack: { russian: 'Перекус', hebrew: 'חטיף', emoji: '🍕' },
+            youtube: { russian: 'Ютуб', hebrew: 'יוטיוב', emoji: '📺' },
+            meme: { russian: 'Мем', hebrew: 'ממ', emoji: '😂' },
+            break: { russian: 'Перерыв', hebrew: 'הפסקה', emoji: '⏰' },
+            email: { russian: 'Почта', hebrew: 'אימייל', emoji: '📧' },
+            game: { russian: 'Игра', hebrew: 'משחק', emoji: '🎮' },
+            music: { russian: 'Музыка', hebrew: 'מוזיקה', emoji: '🎵' },
+            chat: { russian: 'Чат', hebrew: "צ'אט", emoji: '💬' },
+            nap: { russian: 'Дремать', hebrew: 'לנמנם', emoji: '💤' },
+            cookie: { russian: 'Печенье', hebrew: 'עוגייה', emoji: '🍪' },
+            pizza: { russian: 'Пицца', hebrew: 'פיצה', emoji: '🍕' },
+            work: { russian: 'Работа', hebrew: 'עבודה', emoji: '📋' },
+            boss: { russian: 'Босс', hebrew: 'בוס', emoji: '👔' },
+            deadline: { russian: 'Дедлайн', hebrew: 'דדליין', emoji: '📅' },
+            meeting: { russian: 'Совещание', hebrew: 'פגישה', emoji: '🗓️' },
+            later: { russian: 'Потом', hebrew: 'אחר כך', emoji: '⏳' },
+            tomorrow: { russian: 'Завтра', hebrew: 'מחר', emoji: '📆' }
+        };
+
+        const distractionTypes = ['coffee', 'phone', 'sleep', 'snack', 'youtube', 'meme', 'break', 'email', 'game', 'music', 'chat', 'nap', 'cookie', 'pizza'];
+        const taskTypes = ['work', 'meeting', 'deadline'];
+
+        const achievements = [
+            "☕ Coffee Addict! Caffeine level: MAXIMUM",
+            "📱 Social Media Master! Who needs work?",
+            "😴 Professional Napper! ZzZzZz...",
+            "🍕 Snack Champion! Calories don't count when procrastinating",
+            "📺 YouTube PhD! 'Just one more video...'",
+            "🎮 Gaming God! Work can wait",
+            "💬 Chat Legend! Very important conversations",
+            "⏰ Break Time Expert! You deserve it!",
+            "🏆 Master Procrastinator! Natan would be proud",
+            "🌟 Legendary Avoider! Work? Never heard of it"
+        ];
+
+        const natanQuotes = [
+            "Natan says: 'I'll do it after this coffee...'",
+            "Natan says: 'Let me just check one thing...'",
+            "Natan says: 'The deadline isn't THAT close...'",
+            "Natan says: 'I work better under pressure anyway'",
+            "Natan says: 'This meme is very important research'",
+            "Natan says: 'I'm not procrastinating, I'm prioritizing!'",
+            "Natan says: 'Five more minutes...'",
+            "Natan says: 'I need to be in the right mindset'",
+            "Natan says: 'Let me just organize my desk first...'",
+            "Natan says: 'Tomorrow-Natan will handle this'"
+        ];
+
+        // ============ AUDIO CONTEXT ============
+        let audioContext;
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSound(freq, duration, type = 'sine') {
+            if (!audioContext) return;
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.type = type;
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            osc.start();
+            osc.stop(audioContext.currentTime + duration);
+        }
+
+        function playCollectSound() {
+            playSound(523, 0.1);
+            setTimeout(() => playSound(659, 0.1), 50);
+            setTimeout(() => playSound(784, 0.15), 100);
+        }
+
+        function playCoffeeSound() {
+            playSound(300, 0.2, 'sawtooth');
+            setTimeout(() => playSound(400, 0.2, 'sawtooth'), 100);
+        }
+
+        function playAchievementSound() {
+            [523, 659, 784, 1047].forEach((f, i) => {
+                setTimeout(() => playSound(f, 0.2), i * 100);
+            });
+        }
+
+        // ============ SHOW WORD ============
+        function showWord(wordKey) {
+            const word = vocabulary[wordKey];
+            if (!word) return;
+
+            const popup = document.getElementById('wordPopup');
+            document.getElementById('wordRussian').textContent = `🇷🇺 ${word.russian}`;
+            document.getElementById('wordHebrew').textContent = `🇮🇱 ${word.hebrew}`;
+
+            popup.classList.add('visible');
+            setTimeout(() => popup.classList.remove('visible'), 2000);
+        }
+
+        // ============ SPARKLES ============
+        function createSparkles(x, y) {
+            const emojis = ['✨', '⭐', '💫', '🌟', '☕', '💤'];
+            for (let i = 0; i < 8; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                sparkle.style.left = x + (Math.random() - 0.5) * 100 + 'px';
+                sparkle.style.top = y + (Math.random() - 0.5) * 100 + 'px';
+                sparkle.style.fontSize = (20 + Math.random() * 20) + 'px';
+                document.body.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 800);
+            }
+        }
+
+        // ============ ACHIEVEMENTS ============
+        function showAchievement(text) {
+            const el = document.getElementById('achievement');
+            el.textContent = text;
+            el.classList.add('visible');
+            playAchievementSound();
+            setTimeout(() => el.classList.remove('visible'), 3000);
+        }
+
+        function checkAchievements() {
+            const total = gameState.coffeeCount + gameState.distractionCount;
+            if (total === 5) showAchievement(achievements[Math.floor(Math.random() * achievements.length)]);
+            if (total === 10) showAchievement("🎯 Double Digits! You're on fire (not working)!");
+            if (total === 20) showAchievement("👑 Procrastination Royalty!");
+            if (gameState.coffeeCount === 5) showAchievement("☕☕☕ CAFFEINE OVERLOAD! Heart rate: concerning");
+            if (gameState.tasksAvoided === 5) showAchievement("📋 Task Dodger! 5 responsibilities successfully ignored!");
+        }
+
+        // ============ UPDATE UI ============
+        function updateUI() {
+            document.getElementById('coffeeScore').textContent = gameState.coffeeCount;
+            document.getElementById('distractionScore').textContent = gameState.distractionCount;
+            document.getElementById('tasksAvoided').textContent = gameState.tasksAvoided;
+            document.getElementById('coffeeCounter').textContent = `☕ x ${gameState.coffeeCount}`;
+
+            const level = Math.min(gameState.procrastinationLevel, 100);
+            document.getElementById('meterFill').style.width = level + '%';
+
+            if (gameState.procrastinationLevel >= 100) {
+                winLevel();
+            }
+        }
+
+        // ============ SPAWN DISTRACTIONS ============
+        function spawnDistraction() {
+            if (!gameState.gameStarted) return;
+
+            const type = distractionTypes[Math.floor(Math.random() * distractionTypes.length)];
+            const word = vocabulary[type];
+
+            const distraction = document.createElement('div');
+            distraction.className = 'distraction';
+            distraction.textContent = word.emoji;
+            distraction.style.left = (10 + Math.random() * 80) + '%';
+            distraction.style.top = (10 + Math.random() * 40) + '%';
+            distraction.style.animationDelay = Math.random() * 2 + 's';
+
+            distraction.addEventListener('click', (e) => {
+                e.stopPropagation();
+                initAudio();
+
+                createSparkles(e.clientX, e.clientY);
+                showWord(type);
+
+                if (type === 'coffee') {
+                    gameState.coffeeCount++;
+                    playCoffeeSound();
+                } else {
+                    gameState.distractionCount++;
+                    playCollectSound();
+                }
+
+                gameState.procrastinationLevel += 5;
+                updateUI();
+                checkAchievements();
+
+                // Show Natan quote
+                if (Math.random() < 0.3) {
+                    showAchievement(natanQuotes[Math.floor(Math.random() * natanQuotes.length)]);
+                }
+
+                distraction.remove();
+            });
+
+            document.getElementById('gameContainer').appendChild(distraction);
+
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (distraction.parentNode) distraction.remove();
+            }, 5000);
+        }
+
+        // ============ SPAWN TASKS ============
+        function spawnTask() {
+            if (!gameState.gameStarted) return;
+
+            const type = taskTypes[Math.floor(Math.random() * taskTypes.length)];
+            const word = vocabulary[type];
+
+            const task = document.createElement('div');
+            task.className = 'task';
+            task.textContent = word.emoji;
+            task.style.left = (10 + Math.random() * 80) + '%';
+            task.style.top = (10 + Math.random() * 40) + '%';
+
+            task.addEventListener('click', (e) => {
+                e.stopPropagation();
+                initAudio();
+
+                createSparkles(e.clientX, e.clientY);
+                showWord(type);
+                playSound(200, 0.3, 'square'); // Negative sound
+
+                gameState.tasksAvoided++;
+                gameState.procrastinationLevel += 10;
+                updateUI();
+                checkAchievements();
+
+                showAchievement("📋 Task avoided! " + vocabulary.later.russian + " / " + vocabulary.later.hebrew);
+
+                task.remove();
+            });
+
+            document.getElementById('gameContainer').appendChild(task);
+
+            setTimeout(() => {
+                if (task.parentNode) task.remove();
+            }, 4000);
+        }
+
+        // ============ CLICK HANDLERS ============
+        function clickNatan() {
+            initAudio();
+            playCollectSound();
+            createSparkles(event.clientX, event.clientY);
+            showAchievement(natanQuotes[Math.floor(Math.random() * natanQuotes.length)]);
+        }
+
+        function clickDeadline() {
+            initAudio();
+            playSound(150, 0.5, 'sawtooth');
+            createSparkles(event.clientX, event.clientY);
+            showWord('deadline');
+            showAchievement("📅 The deadline stares back... menacingly");
+        }
+
+        // ============ WIN LEVEL ============
+        function winLevel() {
+            gameState.gameStarted = false;
+
+            const messages = [
+                "Maximum procrastination achieved! Your boss would be... disappointed!",
+                "You've successfully avoided ALL productivity! Natan approves! 👏",
+                "Level complete! Zero work was done. Perfect score!",
+                "Procrastination meter: FULL! Time for a well-deserved break from your break!",
+                `${gameState.coffeeCount} coffees consumed. Doctor's appointment recommended.`
+            ];
+
+            document.getElementById('winMessage').textContent = messages[Math.floor(Math.random() * messages.length)];
+            document.getElementById('winPopup').classList.add('visible');
+            playAchievementSound();
+        }
+
+        function nextLevel() {
+            document.getElementById('winPopup').classList.remove('visible');
+            gameState.level++;
+            gameState.procrastinationLevel = 0;
+            gameState.gameStarted = true;
+            updateUI();
+        }
+
+        // ============ START GAME ============
+        function startGame() {
+            document.getElementById('titleScreen').classList.add('hidden');
+            gameState.gameStarted = true;
+
+            // Spawn distractions periodically
+            setInterval(spawnDistraction, 2000);
+            setInterval(spawnTask, 4000);
+
+            // Initial spawns
+            setTimeout(spawnDistraction, 500);
+            setTimeout(spawnDistraction, 1000);
+            setTimeout(spawnTask, 1500);
+        }
+
+        // ============ SECRET CODE ============
+        document.addEventListener('keydown', (e) => {
+            gameState.secretCode += e.key.toLowerCase();
+            if (gameState.secretCode.includes('achlabachla')) {
+                gameState.secretCode = '';
+                showAchievement("🔓 SECRET UNLOCKED! Infinite Coffee Mode! ☕☕☕");
+                gameState.coffeeCount += 100;
+                gameState.procrastinationLevel = 99;
+                updateUI();
+
+                // Rainbow background
+                document.body.style.animation = 'rainbow 2s infinite';
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes rainbow {
+                        0% { filter: hue-rotate(0deg); }
+                        100% { filter: hue-rotate(360deg); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            // Keep only last 20 characters
+            if (gameState.secretCode.length > 20) {
+                gameState.secretCode = gameState.secretCode.slice(-20);
+            }
+        });
+    </script>
+</body>
+</html>
